@@ -1,0 +1,7 @@
+comando:
+
+COMPILAZIONE: javac -Xlint:-options -d classes -cp lib/pddl4j-4.0.0.jar src/fr/uga/pddl4j/examples/*.java
+
+RUN: java -cp "classes;lib\pddl4j-4.0.0.jar" fr.uga.pddl4j.examples.MyAStarPlanner domain.pddl problem.pddl -e FAST_FORWARD -w 1.2 -t 1000
+
+Ambe due da fare nella cartella principale
