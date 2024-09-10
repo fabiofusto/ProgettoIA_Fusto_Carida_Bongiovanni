@@ -251,7 +251,7 @@ public class MyAStarPlanner extends AbstractPlanner {
     final State init = new State(problem.getInitialState());
     final Node root = new Node(init, null, -1, 0, heuristic.estimate(init, problem.getGoal()));
 
-    final Map<State, Double> closed = new HashMap<>(); // Usa una HashMap per memorizzare i costi minimi degli stati
+    final Map<State, Double> closed = new HashMap<>(); // Use a HashMap to store the minimum costs of states.
     final double weight = this.getHeuristicWeight();
     final PriorityQueue<Node> open = new PriorityQueue<>(100,
             (n1, n2) -> Double.compare(weight * n1.getHeuristic() + n1.getCost(), weight * n2.getHeuristic() + n2.getCost())
@@ -270,12 +270,12 @@ public class MyAStarPlanner extends AbstractPlanner {
             return extractPlan(current, problem);
         }
 
-        // Se lo stato è già stato visitato con un costo inferiore, salta questo nodo
+        // If the state has already been visited with a lower cost, skip this node
         if (closed.containsKey(current) && closed.get(current) <= current.getCost()) {
             continue;
         }
 
-        closed.put(current, current.getCost()); // Aggiorna il costo minore per lo stato corrente
+        closed.put(current, current.getCost()); // Update the lowest cost for the current state
 
         for (Action a : problem.getActions()) {
             if (a.isApplicable(current)) {
@@ -299,86 +299,8 @@ public class MyAStarPlanner extends AbstractPlanner {
         }
     }
 
-    return null; // Nessun piano trovato entro il timeout
+    return null; // No plan found within timeout
 }
-
-
-/*
-
-    public Plan idaStar(Problem problem) throws ProblemNotSupportedException {
-        // Check if the problem is supported by the planner
-        if (!this.isSupported(problem)) {
-            throw new ProblemNotSupportedException("Problem not supported");
-        }
-
-        // Initialize the heuristic and root node
-        final StateHeuristic heuristic = StateHeuristic.getInstance(this.getHeuristic(), problem);
-        final State init = new State(problem.getInitialState());
-        final Node root = new Node(init, null, -1, 0, heuristic.estimate(init, problem.getGoal()));
-
-        // Set the initial threshold to the heuristic estimate of the root
-        double threshold = root.getHeuristic();
-        final double weight = this.getHeuristicWeight();
-        final int timeout = this.getTimeout() * 1000;
-        long startTime = System.currentTimeMillis();
-
-        while (true) {
-            Node[] solutionNode = new Node[1]; // Array to hold the solution node
-            double temp = search(root, 0, threshold, problem, heuristic, weight, solutionNode, startTime, timeout);
-            if (temp == -1) {
-                return extractPlan(solutionNode[0], problem); // Solution found
-            }
-            if (temp == Double.MAX_VALUE) {
-                return null; // No solution found
-            }
-            threshold = temp; // Update threshold
-        }
-    }
-
-    private double search(Node node, double g, double threshold, Problem problem, StateHeuristic heuristic, double weight, Node[] solutionNode, long startTime, int timeout) {
-        double f = g + weight * node.getHeuristic();
-        if (f > threshold) {
-            return f;
-        }
-        if (System.currentTimeMillis() - startTime >= timeout) {
-            return Double.MAX_VALUE; // Timeout
-        }
-        if (node.satisfy(problem.getGoal())) {
-            solutionNode[0] = node; // Solution found
-            return -1;
-        }
-
-        double min = Double.MAX_VALUE;
-        for (int i = 0; i < problem.getActions().size(); i++) {
-            Action a = problem.getActions().get(i);
-            if (a.isApplicable(node)) {
-                Node next = new Node(node);
-
-                for (ConditionalEffect ce : a.getConditionalEffects()) {
-                    if (node.satisfy(ce.getCondition())) {
-                        next.apply(ce.getEffect());
-                    }
-                }
-
-                next.setCost(node.getCost() + 1);
-                next.setParent(node);
-                next.setAction(i);
-                next.setHeuristic(heuristic.estimate(next, problem.getGoal()));
-
-                double temp = search(next, g + 1, threshold, problem, heuristic, weight, solutionNode, startTime, timeout);
-                if (temp == -1) {
-                    return -1; // Solution found
-                }
-                if (temp < min) {
-                    min = temp;
-                }
-            }
-        }
-        return min;
-    }
-*/
-
-    // Finally, we return the search computed or null if no search was found
 
 
     /**
