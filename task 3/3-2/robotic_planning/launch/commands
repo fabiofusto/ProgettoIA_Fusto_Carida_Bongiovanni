@@ -1,0 +1,26 @@
+set instance ROBOT agent
+set instance C carrier
+
+set instance BOX1 box set instance BOX2 box set instance BOX3 box
+
+set instance WAREHOUSE location set instance LOCATION1 location set instance LOCATION2 location
+
+set instance WORKSTATION1 workstation set instance WORKSTATION2 workstation set instance WORKSTATION3 workstation
+
+set instance BOLT supply set instance VALVE supply set instance TOOL supply
+
+set function (= (capacity C) 2) set function (= (load C) 0)
+
+set predicate (at_location ROBOT WAREHOUSE) set predicate (at_location C WAREHOUSE) set predicate (carrier_of_robot C ROBOT)
+
+set predicate (at_location BOX1 WAREHOUSE) set predicate (at_location BOX2 WAREHOUSE) set predicate (at_location BOX3 WAREHOUSE)
+set predicate (empty_box BOX1) set predicate (empty_box BOX2) set predicate (empty_box BOX3)
+
+set predicate (at_location BOLT WAREHOUSE) set predicate (at_location VALVE WAREHOUSE) set predicate (at_location TOOL WAREHOUSE)
+
+set predicate (at_location WORKSTATION1 LOCATION1) set predicate (at_location WORKSTATION2 LOCATION2) set predicate (at_location WORKSTATION3 LOCATION2)
+
+set predicate (connected WAREHOUSE LOCATION1) set predicate (connected LOCATION1 LOCATION2)
+set predicate (connected LOCATION1 WAREHOUSE) set predicate (connected LOCATION2 LOCATION1)
+
+set goal(and (workstation_has_content WORKSTATION1 BOLT) (workstation_has_content WORKSTATION2 VALVE) (workstation_has_content WORKSTATION3 TOOL) (at_location ROBOT WAREHOUSE))
