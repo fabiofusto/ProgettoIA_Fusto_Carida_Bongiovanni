@@ -12,7 +12,6 @@
     (content_in_box ?b - box ?c - supply)
     (workstation_has_content ?w - workstation ?c - supply)
     (connected ?loc1 ?loc2 - location)
-    (filled_by ?r - agent ?b - box)
     (free ?r - agent)
     (is_carrying ?r - agent ?b - box)
   ) 
@@ -29,7 +28,6 @@
     :effect (and
         (not (empty_box ?b))
         (content_in_box ?b ?c)
-        (filled_by ?r ?b)
     )
   )
 
@@ -53,7 +51,6 @@
         (content_in_box ?b ?c)
         (at_location ?w ?l)
         (at_location ?r ?l)
-        (filled_by ?r ?b)
         (is_carrying ?r ?b)
         (not (free ?r))
         (not (empty_box ?b))
@@ -62,7 +59,6 @@
         (workstation_has_content ?w ?c)
         (not (content_in_box ?b ?c))
         (empty_box ?b)
-        (not (filled_by ?r ?b))
         (at_location ?b ?l)
         (not (is_carrying ?r ?b))
         (free ?r)
