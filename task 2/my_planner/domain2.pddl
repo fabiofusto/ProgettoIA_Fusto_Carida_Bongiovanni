@@ -12,10 +12,10 @@
     (box_on_carrier ?b - box ?c - carrier)
     (content_in_box ?b - box ?c - supply)
     (workstation_has_content ?w - workstation ?c - supply)
-    (slot_of_carrier_free ?s - slot ?c - carrier)
     (connected ?loc1 ?loc2 - location)
+
     (carrier_of_robot ?c - carrier ?r - agent)
-    (slot_of_robot_free ?s - slot ?r - agent)
+    (slot_of_carrier_free ?s - slot ?c - carrier)
   ) 
 
   (:action fill_box
@@ -24,15 +24,7 @@
         (empty_box ?b)
         (at_location ?c ?l)
         (at_location ?r ?l)
-        (or (exists
-                (?car - carrier)
-                (and
-                    (box_on_carrier ?b ?car)
-                    (at_location ?car ?l)
-                ))
-            (at_location ?b ?l)
-        )
-
+        (at_location ?b ?l)
     )
     :effect (and
         (not (empty_box ?b))
@@ -41,26 +33,22 @@
   )
 
   (:action empty_box
-    :parameters (?b - box ?c - supply ?r - agent ?l - location ?w - workstation)
+    :parameters (?b - box ?c - carrier ?s - slot ?sup - supply ?r - agent ?l - location ?w - workstation)
     :precondition (and
-        (content_in_box ?b ?c)
+        (content_in_box ?b ?sup)
         (at_location ?w ?l)
         (at_location ?r ?l)
-        (or
-            (exists
-                (?car - carrier)
-                (and
-                    (box_on_carrier ?b ?car)
-                    (at_location ?car ?l)
-                )
-
-            )
-            (at_location ?b ?l)
-        ))
+        (box_on_carrier ?b ?c)
+        (carrier_of_robot ?c ?r)
+        (not (slot_of_carrier_free ?s ?c))
+    )
     :effect (and
-        (workstation_has_content ?w ?c)
-        (not (content_in_box ?b ?c))
+        (workstation_has_content ?w ?sup)
+        (not (content_in_box ?b ?sup))
         (empty_box ?b)
+        (at_location ?b ?l)
+        (not (box_on_carrier ?b ?c))
+        (slot_of_carrier_free ?s ?c)
     )
   )
 
@@ -72,7 +60,7 @@
         (at_location ?c ?l)
         (carrier_of_robot ?c ?r)
         (slot_of_carrier_free ?s ?c)
-        (not (empty_box ?b))
+        ;(not (empty_box ?b))
     )
     :effect (and
         (not (at_location ?b ?l))

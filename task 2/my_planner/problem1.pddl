@@ -38,9 +38,16 @@
 
     (connected warehouse location1)
     (connected location1 location2)
-    (connected location1 location4)
     (connected location2 location3)
     (connected location3 location4)
+
+    (connected location1 warehouse)
+    (connected location2 location1)
+    (connected location3 location2)
+    (connected location4 location3)
+
+    (free robot1)
+    (free robot2)
   )
   
   (:goal
@@ -49,6 +56,8 @@
       (workstation_has_content workstation2 pickaxe)
       (workstation_has_content workstation2 screw)
       (workstation_has_content workstation3 tool)
+      (at_location robot1 warehouse)
+      (at_location robot2 warehouse)
     )
   )
 )
